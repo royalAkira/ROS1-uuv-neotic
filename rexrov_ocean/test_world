@@ -1,0 +1,3151 @@
+<sdf version='1.7'>
+  <world name='oceans_waves'>
+    <physics name='default_physics' default='1' type='ode'>
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.01 0.01 0.01 1</ambient>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <shadows>1</shadows>
+      <background>0.7 0.7 0.7 1</background>
+    </scene>
+    <spherical_coordinates>
+      <latitude_deg>56.719</latitude_deg>
+      <longitude_deg>3.51562</longitude_deg>
+      <surface_model>EARTH_WGS84</surface_model>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <light name='sun1' type='directional'>
+      <pose>50 0 150 0 -0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0.3 0.3 -1</direction>
+      <cast_shadows>0</cast_shadows>
+      <attenuation>
+        <range>10</range>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <light name='sun_diffuse' type='directional'>
+      <pose>-50 0 -150 0 -0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0 0 0 1</specular>
+      <direction>-0.3 -0.3 -1</direction>
+      <cast_shadows>0</cast_shadows>
+      <attenuation>
+        <range>10</range>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name='world_ned'>
+      <pose>0 0 0 0 -0 0</pose>
+      <static>1</static>
+      <link name='world_ned'>
+        <gravity>0</gravity>
+        <pose>0 0 0 -3.14159 -0 1.5708</pose>
+        <visual name='N_visual'>
+          <pose>0.25 0 0 1.5708 -0 1.5708</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='E_visual'>
+          <pose>0 0.25 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Green</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='D_visual'>
+          <pose>0 0 0.25 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Blue</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='ocean'>
+      <static>1</static>
+      <link name='ocean_link'>
+        <visual name='ocean_surface'>
+          <pose>0 0 0 0 -0 0</pose>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+              <scale>2 2 2</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/waves.material</uri>
+              <name>UUVSimulator/SimpleWaves</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='ocean_below'>
+          <pose>0 0 0 3.14 -0 0</pose>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+              <scale>2 2 2</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/StaticWater</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='seafloor'>
+          <cast_shadows>0</cast_shadows>
+          <pose>0 0 -100 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2000 2000 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/sand.material</uri>
+              <name>UUVSimulator/SandAndStones</name>
+            </script>
+            <emissive>0.6 0.6 0.6 1</emissive>
+          </material>
+        </visual>
+        <collision name='seafloor'>
+          <pose>0 0 -100 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2000 2000 0.1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='north'>
+          <pose>1000 0 -50 3.14159 -1.57079 3.14159</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 2000</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/SeaWall</name>
+            </script>
+            <emissive>0.6 0.6 0.6 1</emissive>
+          </material>
+        </visual>
+        <visual name='south'>
+          <pose>-1000 0 -50 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 2000</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/SeaWall</name>
+            </script>
+            <emissive>0.6 0.6 0.6 1</emissive>
+          </material>
+        </visual>
+        <visual name='west'>
+          <pose>0 1000 -50 1.5708 -0 0</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2000 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/SeaWall</name>
+            </script>
+            <emissive>0.6 0.6 0.6 1</emissive>
+          </material>
+        </visual>
+        <visual name='east'>
+          <pose>0 -1000 -50 -1.5708 0 0</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2000 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/SeaWall</name>
+            </script>
+            <emissive>0.6 0.6 0.6 1</emissive>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+    </model>
+    <model name='sand_heightmap'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='ground'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://sand_heightmap/meshes/heightmap.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='ground_sand'>
+          <cast_shadows>1</cast_shadows>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://sand_heightmap/meshes/heightmap.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/sand.material</uri>
+              <name>UUVSimulator/SandAndStones</name>
+            </script>
+            <emissive>0.6 0.6 0.6 1</emissive>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>0 0 -95 0 -0 0</pose>
+    </model>
+    <plugin name='underwater_current_plugin' filename='libuuv_underwater_current_ros_plugin.so'>
+      <namespace>hydrodynamics</namespace>
+      <constant_current>
+        <topic>current_velocity</topic>
+        <velocity>
+          <mean>0</mean>
+          <min>0</min>
+          <max>5</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </velocity>
+        <horizontal_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </horizontal_angle>
+        <vertical_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </vertical_angle>
+      </constant_current>
+    </plugin>
+    <plugin name='sc_interface' filename='libuuv_sc_ros_interface_plugin.so'/>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>0.008491 -34.0603 -12.5757 0 0.064054 1.71082</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <wind/>
+    <model name='rexrov'>
+      <link name='rexrov/base_link'>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1862.87</mass>
+          <inertia>
+            <ixx>525.39</ixx>
+            <ixy>1.44</ixy>
+            <ixz>33.41</ixz>
+            <iyy>794.2</iyy>
+            <iyz>2.6</iyz>
+            <izz>691.23</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/base_link_collision'>
+          <pose>0 0 -0.75 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.56 1.5 0.1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='rexrov/base_link_collision_1'>
+          <pose>0 0 0.6 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.56 1.5 0.4</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='rexrov/base_link_collision_2'>
+          <pose>-0.2 0.7 -0.15 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.2 0.1 1.1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='rexrov/base_link_collision_3'>
+          <pose>-0.2 -0.7 -0.15 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.2 0.1 1.1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='rexrov/base_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/RexROV_no_props.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/camera_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>1.15 0 0.4 0 0.6 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/camera_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/camera_link'>
+        <pose relative_to='rexrov/camera_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/camera_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/camera_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/meshes/oe14-372.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor name='camera' type='camera'>
+          <update_rate>30</update_rate>
+          <camera name='camera'>
+            <horizontal_fov>1.5125</horizontal_fov>
+            <image>
+              <width>768</width>
+              <height>492</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.05</near>
+              <far>3000</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0.02</stddev>
+            </noise>
+          </camera>
+          <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+            <updateRate>30</updateRate>
+            <cameraName>rexrov/camera</cameraName>
+            <frameName>camera_link_optical</frameName>
+            <attenuationR>0.0</attenuationR>
+            <attenuationG>0.0</attenuationG>
+            <attenuationB>0.0</attenuationB>
+            <backgroundR>0</backgroundR>
+            <backgroundG>0</backgroundG>
+            <backgroundB>0</backgroundB>
+            <imageTopicName>camera_image</imageTopicName>
+            <pointCloudTopicName>camera_cloud</pointCloudTopicName>
+            <depthImageTopicName>camera_depth</depthImageTopicName>
+            <depthImageCameraInfoTopicName>camera_depth_info</depthImageCameraInfoTopicName>
+            <pointCloudCutoff>10.0</pointCloudCutoff>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/camera_optical_joint' type='revolute'>
+        <pose relative_to='rexrov/camera_link'>0 0 0 -1.5708 -0 -1.5708</pose>
+        <parent>rexrov/camera_link</parent>
+        <child>rexrov/camera_link_optical</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/camera_link_optical'>
+        <pose relative_to='rexrov/camera_optical_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.66667e-12</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.66667e-12</iyy>
+            <iyz>0</iyz>
+            <izz>1.66667e-12</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/camera_link_optical_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/cameraleft_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>1.15 0.63 0.4 0 0.6 -0.4</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/cameraleft_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/cameraleft_link'>
+        <pose relative_to='rexrov/cameraleft_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/cameraleft_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/cameraleft_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/meshes/oe14-372.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor name='cameraleft' type='camera'>
+          <update_rate>30</update_rate>
+          <camera name='cameraleft'>
+            <horizontal_fov>1.5125</horizontal_fov>
+            <image>
+              <width>768</width>
+              <height>492</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.05</near>
+              <far>3000</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0.02</stddev>
+            </noise>
+          </camera>
+          <plugin name='cameraleft_controller' filename='libgazebo_ros_camera.so'>
+            <updateRate>30</updateRate>
+            <cameraName>rexrov/cameraleft</cameraName>
+            <frameName>cameraleft_link_optical</frameName>
+            <attenuationR>0.0</attenuationR>
+            <attenuationG>0.0</attenuationG>
+            <attenuationB>0.0</attenuationB>
+            <backgroundR>0</backgroundR>
+            <backgroundG>0</backgroundG>
+            <backgroundB>0</backgroundB>
+            <imageTopicName>camera_image</imageTopicName>
+            <pointCloudTopicName>camera_cloud</pointCloudTopicName>
+            <depthImageTopicName>camera_depth</depthImageTopicName>
+            <depthImageCameraInfoTopicName>camera_depth_info</depthImageCameraInfoTopicName>
+            <pointCloudCutoff>10.0</pointCloudCutoff>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/cameraleft_optical_joint' type='revolute'>
+        <pose relative_to='rexrov/cameraleft_link'>0 0 0 -1.5708 -0 -1.5708</pose>
+        <parent>rexrov/cameraleft_link</parent>
+        <child>rexrov/cameraleft_link_optical</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/cameraleft_link_optical'>
+        <pose relative_to='rexrov/cameraleft_optical_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.66667e-12</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.66667e-12</iyy>
+            <iyz>0</iyz>
+            <izz>1.66667e-12</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/cameraleft_link_optical_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/cameraright_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>1.15 -0.63 0.4 0 0.6 0.4</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/cameraright_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/cameraright_link'>
+        <pose relative_to='rexrov/cameraright_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/cameraright_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/cameraright_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/meshes/oe14-372.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor name='cameraright' type='camera'>
+          <update_rate>30</update_rate>
+          <camera name='cameraright'>
+            <horizontal_fov>1.5125</horizontal_fov>
+            <image>
+              <width>768</width>
+              <height>492</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.05</near>
+              <far>3000</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0.02</stddev>
+            </noise>
+          </camera>
+          <plugin name='cameraright_controller' filename='libgazebo_ros_camera.so'>
+            <updateRate>30</updateRate>
+            <cameraName>rexrov/cameraright</cameraName>
+            <frameName>cameraright_link_optical</frameName>
+            <attenuationR>0.0</attenuationR>
+            <attenuationG>0.0</attenuationG>
+            <attenuationB>0.0</attenuationB>
+            <backgroundR>0</backgroundR>
+            <backgroundG>0</backgroundG>
+            <backgroundB>0</backgroundB>
+            <imageTopicName>camera_image</imageTopicName>
+            <pointCloudTopicName>camera_cloud</pointCloudTopicName>
+            <depthImageTopicName>camera_depth</depthImageTopicName>
+            <depthImageCameraInfoTopicName>camera_depth_info</depthImageCameraInfoTopicName>
+            <pointCloudCutoff>10.0</pointCloudCutoff>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/cameraright_optical_joint' type='revolute'>
+        <pose relative_to='rexrov/cameraright_link'>0 0 0 -1.5708 -0 -1.5708</pose>
+        <parent>rexrov/cameraright_link</parent>
+        <child>rexrov/cameraright_link_optical</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/cameraright_link_optical'>
+        <pose relative_to='rexrov/cameraright_optical_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.66667e-12</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.66667e-12</iyy>
+            <iyz>0</iyz>
+            <izz>1.66667e-12</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/cameraright_link_optical_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/dvl_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-1.4 0 -0.312 3.14159 1.57079 3.14159</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/dvl_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/dvl_link'>
+        <pose relative_to='rexrov/dvl_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.7e-08</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.7e-08</iyy>
+            <iyz>0</iyz>
+            <izz>1.7e-08</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/dvl_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='rexrov/dvl_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/meshes/dvl.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/dvl_sonar0_joint' type='revolute'>
+        <pose relative_to='rexrov/dvl_link'>0 0 0 0 -0.52 0</pose>
+        <parent>rexrov/dvl_link</parent>
+        <child>rexrov/dvl_sonar0_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/dvl_sonar0_link'>
+        <pose relative_to='rexrov/dvl_sonar0_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.7e-08</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.7e-08</iyy>
+            <iyz>0</iyz>
+            <izz>1.7e-08</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/dvl_sonar0_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <sensor name='dvl_sonar0' type='ray'>
+          <pose>0 0 0 0 -0 0</pose>
+          <update_rate>7</update_rate>
+          <visualize>0</visualize>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.55</min>
+              <max>81</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='dvl_sonar0' filename='libgazebo_ros_range.so'>
+            <gaussianNoise>0.005</gaussianNoise>
+            <alwaysOn>1</alwaysOn>
+            <updateRate>7</updateRate>
+            <topicName>dvl_sonar0</topicName>
+            <frameName>rexrov/dvl_sonar0_link</frameName>
+            <fov>0.06</fov>
+            <radiation>ultrasound</radiation>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/dvl_sonar1_joint' type='revolute'>
+        <pose relative_to='rexrov/dvl_link'>0 0 0 0 -0 0.52</pose>
+        <parent>rexrov/dvl_link</parent>
+        <child>rexrov/dvl_sonar1_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/dvl_sonar1_link'>
+        <pose relative_to='rexrov/dvl_sonar1_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.7e-08</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.7e-08</iyy>
+            <iyz>0</iyz>
+            <izz>1.7e-08</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/dvl_sonar1_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <sensor name='dvl_sonar1' type='ray'>
+          <pose>0 0 0 0 -0 0</pose>
+          <update_rate>7</update_rate>
+          <visualize>0</visualize>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.55</min>
+              <max>81</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='dvl_sonar1' filename='libgazebo_ros_range.so'>
+            <gaussianNoise>0.005</gaussianNoise>
+            <alwaysOn>1</alwaysOn>
+            <updateRate>7</updateRate>
+            <topicName>dvl_sonar1</topicName>
+            <frameName>rexrov/dvl_sonar1_link</frameName>
+            <fov>0.06</fov>
+            <radiation>ultrasound</radiation>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/dvl_sonar2_joint' type='revolute'>
+        <pose relative_to='rexrov/dvl_link'>0 0 0 0 0.52 0</pose>
+        <parent>rexrov/dvl_link</parent>
+        <child>rexrov/dvl_sonar2_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/dvl_sonar2_link'>
+        <pose relative_to='rexrov/dvl_sonar2_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.7e-08</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.7e-08</iyy>
+            <iyz>0</iyz>
+            <izz>1.7e-08</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/dvl_sonar2_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <sensor name='dvl_sonar2' type='ray'>
+          <pose>0 0 0 0 -0 0</pose>
+          <update_rate>7</update_rate>
+          <visualize>0</visualize>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.55</min>
+              <max>81</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='dvl_sonar2' filename='libgazebo_ros_range.so'>
+            <gaussianNoise>0.005</gaussianNoise>
+            <alwaysOn>1</alwaysOn>
+            <updateRate>7</updateRate>
+            <topicName>dvl_sonar2</topicName>
+            <frameName>rexrov/dvl_sonar2_link</frameName>
+            <fov>0.06</fov>
+            <radiation>ultrasound</radiation>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/dvl_sonar3_joint' type='revolute'>
+        <pose relative_to='rexrov/dvl_link'>0 0 0 0 0 -0.52</pose>
+        <parent>rexrov/dvl_link</parent>
+        <child>rexrov/dvl_sonar3_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/dvl_sonar3_link'>
+        <pose relative_to='rexrov/dvl_sonar3_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.7e-08</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.7e-08</iyy>
+            <iyz>0</iyz>
+            <izz>1.7e-08</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/dvl_sonar3_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <sensor name='dvl_sonar3' type='ray'>
+          <pose>0 0 0 0 -0 0</pose>
+          <update_rate>7</update_rate>
+          <visualize>0</visualize>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>3</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.03</min_angle>
+                <max_angle>0.03</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.55</min>
+              <max>81</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='dvl_sonar3' filename='libgazebo_ros_range.so'>
+            <gaussianNoise>0.005</gaussianNoise>
+            <alwaysOn>1</alwaysOn>
+            <updateRate>7</updateRate>
+            <topicName>dvl_sonar3</topicName>
+            <frameName>rexrov/dvl_sonar3_link</frameName>
+            <fov>0.06</fov>
+            <radiation>ultrasound</radiation>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/gps_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0 0 0 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/gps_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/gps_link'>
+        <pose relative_to='rexrov/gps_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <sensor name='rexrov/gps' type='gps'>
+          <pose>0 0 0 0 -0 0</pose>
+          <visualize>0</visualize>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+          <gps>
+            <position_sensing>
+              <horizontal>
+                <noise type='gaussian'>
+                  <mean>0</mean>
+                  <stddev>0</stddev>
+                  <bias_mean>0</bias_mean>
+                  <bias_stddev>0</bias_stddev>
+                </noise>
+              </horizontal>
+              <vertical>
+                <noise type='gaussian'>
+                  <mean>0</mean>
+                  <stddev>0</stddev>
+                  <bias_mean>0</bias_mean>
+                  <bias_stddev>0</bias_stddev>
+                </noise>
+              </vertical>
+            </position_sensing>
+            <velocity_sensing>
+              <horizontal>
+                <noise type='gaussian'>
+                  <mean>0</mean>
+                  <stddev>0</stddev>
+                  <bias_mean>0</bias_mean>
+                  <bias_stddev>0</bias_stddev>
+                </noise>
+              </horizontal>
+              <vertical>
+                <noise type='gaussian'>
+                  <mean>0</mean>
+                  <stddev>0</stddev>
+                  <bias_mean>0</bias_mean>
+                  <bias_stddev>0</bias_stddev>
+                </noise>
+              </vertical>
+            </velocity_sensing>
+          </gps>
+          <plugin name='rexrov_gazebo_gps_ros_plugin' filename='libuuv_gazebo_ros_gps_plugin.so'>
+            <robot_namespace>rexrov</robot_namespace>
+            <sensor_topic>gps</sensor_topic>
+            <horizontal_pos_std_dev>0.0</horizontal_pos_std_dev>
+            <vertical_pos_std_dev>0.0</vertical_pos_std_dev>
+            <update_rate>30</update_rate>
+            <is_on>1</is_on>
+            <enable_gazebo_messages>1</enable_gazebo_messages>
+            <robotNamespace>/rexrov/</robotNamespace>
+          </plugin>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/imu_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0 0 0 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/imu_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/imu_link'>
+        <pose relative_to='rexrov/imu_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.015</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/magnetometer_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0 0 0 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/magnetometer_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/magnetometer_link'>
+        <pose relative_to='rexrov/magnetometer_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.015</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/magnetometer_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='rexrov/magnetometer_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/pose_sensor_default_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0 0 0 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/pose_sensor_link_default</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/pose_sensor_link_default'>
+        <pose relative_to='rexrov/pose_sensor_default_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/pose_sensor_noisy_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0 0 0 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/pose_sensor_link_noisy</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/pose_sensor_link_noisy'>
+        <pose relative_to='rexrov/pose_sensor_noisy_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/pressure_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-1.32 0.5 0.85 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/pressure_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/pressure_link'>
+        <pose relative_to='rexrov/pressure_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.015</mass>
+          <inertia>
+            <ixx>1e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/pressure_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='rexrov/pressure_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/meshes/pressure.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/rpt_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-1.32 0 0.8 0 -0 0</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/rpt_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/rpt_link'>
+        <pose relative_to='rexrov/rpt_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1.7e-08</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.7e-08</iyy>
+            <iyz>0</iyz>
+            <izz>1.7e-08</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/rpt_link_collision'>
+          <pose>0 0 0 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='rexrov/rpt_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/meshes/rpt.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_0_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-0.890895 0.334385 0.528822 0 -1.30079 -0.92869</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_0</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_0'>
+        <pose relative_to='rexrov/thruster_0_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_0_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_0_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_1_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-0.890895 -0.334385 0.528822 0 -1.30079 0.92869</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_1</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_1'>
+        <pose relative_to='rexrov/thruster_1_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_1_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_1_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_2_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0.890895 0.334385 0.528822 3.14159 -1.30079 -2.2129</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_2</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_2'>
+        <pose relative_to='rexrov/thruster_2_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_2_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_2_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_3_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0.890895 -0.334385 0.528822 3.14159 -1.30079 2.2129</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_3</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_3'>
+        <pose relative_to='rexrov/thruster_3_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_3_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_3_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_4_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-0.412125 0.505415 0.129 0 -0 0.785398</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_4</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_4'>
+        <pose relative_to='rexrov/thruster_4_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_4_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_4_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_5_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>-0.412125 -0.505415 0.129 0 0 -0.785398</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_5</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_5'>
+        <pose relative_to='rexrov/thruster_5_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_5_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_5_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_6_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0.412125 0.505415 0.129 0 -0 2.35619</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_6</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_6'>
+        <pose relative_to='rexrov/thruster_6_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_6_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_6_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='rexrov/thruster_7_joint' type='revolute'>
+        <pose relative_to='rexrov/base_link'>0.412125 -0.505415 0.129 0 0 -2.35619</pose>
+        <parent>rexrov/base_link</parent>
+        <child>rexrov/thruster_7</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rexrov/thruster_7'>
+        <pose relative_to='rexrov/thruster_7_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='rexrov/thruster_7_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1e-06</length>
+              <radius>1e-06</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rexrov/thruster_7_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/royal/catkin_ws/src/uuv_simulator/uuv_descriptions/meshes/prop.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <plugin name='uuv_plugin' filename='libuuv_underwater_object_ros_plugin.so'>
+        <fluid_density>1028.0</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>0</debug>
+        <link name='rexrov/base_link'>
+          <neutrally_buoyant>0</neutrally_buoyant>
+          <volume>1.83826</volume>
+          <box>
+            <width>1.5</width>
+            <length>2.6</length>
+            <height>1.6</height>
+          </box>
+          <center_of_buoyancy>0.0 0.0 0.3</center_of_buoyancy>
+          <hydrodynamic_model>
+            <type>fossen</type>
+            <added_mass>779.79 -6.8773 -103.32 8.5426 -165.54 -7.8033 -6.8773 1222 51.29 409.44 -5.8488 62.726 -103.32 51.29 3659.9 6.1112 -386.42 10.774 8.5426 409.44 6.1112 534.9 -10.027 21.019 -165.54 -5.8488 -386.42 -10.027 842.69 -1.1162 -7.8033 62.726 10.775 21.019 -1.1162 224.32</added_mass>
+            <linear_damping>-74.82 -69.48 -728.4 -268.8 -309.77 -105</linear_damping>
+            <quadratic_damping>-748.22 -992.53 -1821.01 -672 -774.44 -523.27</quadratic_damping>
+          </hydrodynamic_model>
+        </link>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_0_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_0</linkName>
+        <jointName>rexrov/thruster_0_joint</jointName>
+        <thrusterID>0</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_1_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_1</linkName>
+        <jointName>rexrov/thruster_1_joint</jointName>
+        <thrusterID>1</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_2_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_2</linkName>
+        <jointName>rexrov/thruster_2_joint</jointName>
+        <thrusterID>2</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_3_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_3</linkName>
+        <jointName>rexrov/thruster_3_joint</jointName>
+        <thrusterID>3</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_4_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_4</linkName>
+        <jointName>rexrov/thruster_4_joint</jointName>
+        <thrusterID>4</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_5_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_5</linkName>
+        <jointName>rexrov/thruster_5_joint</jointName>
+        <thrusterID>5</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_6_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_6</linkName>
+        <jointName>rexrov/thruster_6_joint</jointName>
+        <thrusterID>6</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='rexrov_7_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>rexrov/thruster_7</linkName>
+        <jointName>rexrov/thruster_7_joint</jointName>
+        <thrusterID>7</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.05</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>0.00031</rotorConstant>
+        </conversion>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='libuuv_gazebo_dvl_plugin' filename='libuuv_gazebo_ros_dvl_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/dvl_link</link_name>
+        <sensor_topic>dvl</sensor_topic>
+        <update_rate>7</update_rate>
+        <noise_sigma>0</noise_sigma>
+        <noise_amplitude>0</noise_amplitude>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <enable_local_ned_frame>0</enable_local_ned_frame>
+        <static_reference_frame>world</static_reference_frame>
+        <beam_link_name_0>rexrov/dvl_sonar0_link</beam_link_name_0>
+        <beam_link_name_1>rexrov/dvl_sonar1_link</beam_link_name_1>
+        <beam_link_name_2>rexrov/dvl_sonar2_link</beam_link_name_2>
+        <beam_link_name_3>rexrov/dvl_sonar3_link</beam_link_name_3>
+        <beam_topic_0>dvl_sonar0</beam_topic_0>
+        <beam_topic_1>dvl_sonar1</beam_topic_1>
+        <beam_topic_2>dvl_sonar2</beam_topic_2>
+        <beam_topic_3>dvl_sonar3</beam_topic_3>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='libuuv_gazebo_ros_magnetometer__plugin' filename='libuuv_gazebo_ros_magnetometer_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/magnetometer_link</link_name>
+        <sensor_topic>magnetometer</sensor_topic>
+        <update_rate>50</update_rate>
+        <intensity>65.0</intensity>
+        <reference_heading>3.141592653589793</reference_heading>
+        <declination>0.0</declination>
+        <inclination>1.0471975511965976</inclination>
+        <noise_xy>1.0</noise_xy>
+        <noise_z>1.4</noise_z>
+        <turn_on_bias>2.0</turn_on_bias>
+        <noise_amplitude>0</noise_amplitude>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <enable_local_ned_frame>0</enable_local_ned_frame>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='libuuv_gazebo_rpt_plugin' filename='libuuv_gazebo_ros_rpt_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/rpt_link</link_name>
+        <static_reference_frame>ssbl</static_reference_frame>
+        <sensor_topic>rpt</sensor_topic>
+        <update_rate>0.5</update_rate>
+        <noise_sigma>0.0</noise_sigma>
+        <noise_amplitude>0.0</noise_amplitude>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='libuuv_gazebo_subseapressure_plugin' filename='libuuv_gazebo_ros_subsea_pressure_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/pressure_link</link_name>
+        <sensor_topic>pressure</sensor_topic>
+        <update_rate>10</update_rate>
+        <saturation>30000</saturation>
+        <noise_sigma>3.0</noise_sigma>
+        <noise_amplitude>0.0</noise_amplitude>
+        <estimate_depth_on>0</estimate_depth_on>
+        <standard_pressure>101.325</standard_pressure>
+        <kPa_per_meter>9.80638</kPa_per_meter>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='libuuv_gazebo_imu_plugin' filename='libuuv_gazebo_ros_imu_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/imu_link</link_name>
+        <sensor_topic>imu</sensor_topic>
+        <gyroscope_noise_density>0.0003394</gyroscope_noise_density>
+        <gyroscope_random_walk>3.8785e-05</gyroscope_random_walk>
+        <gyroscope_bias_correlation_time>1000.0</gyroscope_bias_correlation_time>
+        <gyroscope_turn_on_bias_sigma>0.0087</gyroscope_turn_on_bias_sigma>
+        <accelerometer_noise_density>0.004</accelerometer_noise_density>
+        <accelerometer_random_walk>0.006</accelerometer_random_walk>
+        <accelerometer_bias_correlation_time>300.0</accelerometer_bias_correlation_time>
+        <accelerometer_turn_on_bias_sigma>0.196</accelerometer_turn_on_bias_sigma>
+        <orientation_noise>0.01</orientation_noise>
+        <update_rate>50</update_rate>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <enable_local_ned_frame>0</enable_local_ned_frame>
+        <static_reference_frame>world</static_reference_frame>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='pose_3d_plugin' filename='libuuv_gazebo_ros_pose_gt_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/base_link</link_name>
+        <sensor_topic>pose_gt</sensor_topic>
+        <static_reference_frame>world</static_reference_frame>
+        <noise_sigma>0.0</noise_sigma>
+        <noise_amplitude>0.0</noise_amplitude>
+        <update_rate>20</update_rate>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <publish_ned_odom>0</publish_ned_odom>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <plugin name='uuv_joint_state_publisher' filename='libuuv_joint_state_publisher.so'>
+        <robotNamespace>rexrov</robotNamespace>
+        <updateRate>50</updateRate>
+      </plugin>
+      <plugin name='pose_3d_plugin' filename='libuuv_gazebo_ros_pose_gt_plugin.so'>
+        <robot_namespace>rexrov</robot_namespace>
+        <link_name>rexrov/base_link</link_name>
+        <sensor_topic>pose_gt_noisy</sensor_topic>
+        <static_reference_frame>world</static_reference_frame>
+        <noise_sigma>0.002</noise_sigma>
+        <noise_amplitude>0.02</noise_amplitude>
+        <update_rate>20</update_rate>
+        <enable_gazebo_messages>0</enable_gazebo_messages>
+        <publish_ned_odom>0</publish_ned_odom>
+        <robotNamespace>/rexrov/</robotNamespace>
+      </plugin>
+      <pose>0 0 -20 0 -0 0</pose>
+    </model>
+    <model name='target'>
+      <link name='Floor_0'>
+        <pose>0.54 -0.986309 0.005931 -1.55315 0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <inertial>
+          <mass>1</mass>
+          <pose>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <visual name='Floor_0_Visual'>
+          <pose>0 0 0.05 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>10 10 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <meta>
+            <layer>1</layer>
+          </meta>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='Floor_0_Collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0.05 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>10 10 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <link name='Wall_10'>
+        <pose>-0.429315 -0.604556 1.01155 -1.52943 -0.905521 -0.084144</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <inertial>
+          <mass>1</mass>
+          <pose>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <visual name='Wall_10_Visual'>
+          <pose>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.75 0.15 0.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 0 0 0</ambient>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <diffuse>1 0 0 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='Wall_10_Collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.75 0.15 0.5</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <link name='Wall_8'>
+        <pose>-0.429315 -0.573185 1.00328 1.54376 -0.900758 3.02579</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <inertial>
+          <mass>1</mass>
+          <pose>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <visual name='Wall_8_Visual'>
+          <pose>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.75 0.15 0.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 0 0 1</ambient>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <diffuse>1 0 0 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='Wall_8_Collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.75 0.15 0.5</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>12.724 15.3901 0 0 -0 0</pose>
+    </model>
+    <light name='user_spot_light_0' type='spot'>
+      <pose>2.124 51.2433 1 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0 0 -1</direction>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <spot>
+        <inner_angle>0.6</inner_angle>
+        <outer_angle>1</outer_angle>
+        <falloff>1</falloff>
+      </spot>
+    </light>
+    <light name='user_spot_light_1' type='spot'>
+      <pose>2.10222 66.3461 1 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0 0 -1</direction>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <spot>
+        <inner_angle>0.6</inner_angle>
+        <outer_angle>1</outer_angle>
+        <falloff>1</falloff>
+      </spot>
+    </light>
+    <light name='user_point_light_0' type='point'>
+      <pose>-0.772918 40.9 1 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+    <light name='user_point_light_1' type='point'>
+      <pose>2.62694 51.9599 1 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+    <state world_name='oceans_waves'>
+      <sim_time>219 944000000</sim_time>
+      <real_time>224 659477258</real_time>
+      <wall_time>1748528312 913790048</wall_time>
+      <iterations>109972</iterations>
+      <model name='ocean'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='ocean_link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='rexrov'>
+        <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+        <scale>1 1 1</scale>
+        <link name='rexrov/base_link'>
+          <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 -0 0 0 -0 0</velocity>
+          <acceleration>-0 -0 -0 -0.000124 4.4e-05 8.3e-05</acceleration>
+          <wrench>-0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/camera_link'>
+          <pose>-1.13754 -0.17701 -15.0796 -0.000104 0.600254 -2.98764</pose>
+          <velocity>0 0 -0 0 -0 0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/camera_link_optical'>
+          <pose>-1.13754 -0.17701 -15.0796 -2.17105 -8.8e-05 1.7248</pose>
+          <velocity>0 0 -0 -0 -0 -0</velocity>
+          <acceleration>-0 0 -0 -0 -0 -0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/cameraleft_link'>
+          <pose>-1.04089 -0.799554 -15.0796 -0.000216 0.6002 2.89548</pose>
+          <velocity>0 0 -0 0 -0 0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/cameraleft_link_optical'>
+          <pose>-1.04089 -0.799554 -15.0796 -2.171 -0.00018 1.3248</pose>
+          <velocity>0 0 -0 0 -0 0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/cameraright_link'>
+          <pose>-1.23418 0.445533 -15.0795 2.4e-05 0.600267 -2.58757</pose>
+          <velocity>0 0 -0 0 -0 0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/cameraright_link_optical'>
+          <pose>-1.23418 0.445533 -15.0795 -2.17107 1.8e-05 2.1248</pose>
+          <velocity>0 0 -0 -0 -0 -0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/dvl_link'>
+          <pose>1.38245 0.214245 -15.7909 -2.81973 1.57052 0.475873</pose>
+          <velocity>0 -0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/dvl_sonar0_link'>
+          <pose>1.38245 0.214245 -15.7909 -0.000173 1.05105 -2.98774</pose>
+          <velocity>0 -0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/dvl_sonar1_link'>
+          <pose>1.38245 0.214245 -15.7909 1.57132 1.05088 -1.41634</pose>
+          <velocity>0 -0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/dvl_sonar2_link'>
+          <pose>1.38245 0.214245 -15.7909 -3.14142 1.05054 0.154157</pose>
+          <velocity>0 -0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/dvl_sonar3_link'>
+          <pose>1.38245 0.214245 -15.7909 -1.57132 1.05071 1.72435</pose>
+          <velocity>0 -0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/gps_link'>
+          <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 -0 -0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/imu_link'>
+          <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 -0 -0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/magnetometer_link'>
+          <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 -0 -0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/pose_sensor_link_default'>
+          <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 -0 -0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/pose_sensor_link_noisy'>
+          <pose>-0.001052 -0.000552 -15.4793 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 -0 -0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/pressure_link'>
+          <pose>1.37982 -0.292253 -14.629 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/rpt_link'>
+          <pose>1.30313 0.201836 -14.679 -8.6e-05 0.000254 -2.98759</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_0'>
+          <pose>0.930467 -0.194382 -14.9503 -2.69339 -1.30071 2.36783</pose>
+          <velocity>-0 0 0 1.46906 0.588323 0.773583</velocity>
+          <acceleration>0 -0 0 0 -0 0</acceleration>
+          <wrench>0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_1'>
+          <pose>0.827878 0.466472 -14.9502 0.254142 -1.30057 -2.05944</pose>
+          <velocity>0 0 0 -1.17948 -0.098834 -0.717264</velocity>
+          <acceleration>-0 0 0 0 -0 0</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_2'>
+          <pose>-0.830235 -0.467707 -14.9507 -0.948571 -1.30101 1.08325</pose>
+          <velocity>-0 0 -0 1.58818 -0.379143 0.728593</velocity>
+          <acceleration>-0 0 0 0 -0 0</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_3'>
+          <pose>-0.932823 0.193147 -14.9507 -2.18361 -1.30087 -0.775607</pose>
+          <velocity>0 -0 -0 -0.30993 -1.40206 -0.751039</velocity>
+          <acceleration>0 -0 -0 0 -0 0</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_4'>
+          <pose>0.483694 -0.436782 -15.3502 -0.998297 0.00024 -2.20219</pose>
+          <velocity>0 -0 -0 -2.16023 1.01978 -0.003437</velocity>
+          <acceleration>0 -0 -0 0 -0 0</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_5'>
+          <pose>0.328634 0.562085 -15.3502 1.02242 0.000119 2.5102</pose>
+          <velocity>0 0 0 1.69596 0.867162 3.13861</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_6'>
+          <pose>-0.3308 -0.563221 -15.3505 -0.452308 -0.000119 -0.631396</pose>
+          <velocity>-0 -0 -0 1.68643 0.86005 3.1386</velocity>
+          <acceleration>-0 -0 -0 0 -0 0</acceleration>
+          <wrench>-0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='rexrov/thruster_7'>
+          <pose>-0.48586 0.435646 -15.3504 -0.266234 -0.00024 0.93941</pose>
+          <velocity>-0 0 -0 -2.14783 1.03663 -0.003432</velocity>
+          <acceleration>-0 0 0 0 -0 0</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='sand_heightmap'>
+        <pose>0 0 -95 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 -95 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='target'>
+        <pose>-6.41873 -0.388268 -17.4085 0 0 -1.51038</pose>
+        <scale>1 1 1</scale>
+        <link name='Floor_0'>
+          <pose>-7.37063 -0.986836 -17.4025 -1.55315 0 -1.51038</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_10'>
+          <pose>-7.0481 0.003761 -16.3969 -1.52943 -0.905521 -1.59452</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_8'>
+          <pose>-7.01679 0.005655 -16.4052 1.54376 -0.900758 1.51541</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='world_ned'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='world_ned'>
+          <pose>0 0 0 -3.14159 -0 1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun1'>
+        <pose>50 0 150 0 -0 0</pose>
+      </light>
+      <light name='sun_diffuse'>
+        <pose>-50 0 -150 0 -0 0</pose>
+      </light>
+      <light name='user_point_light_0'>
+        <pose>-0.772918 40.9 1 0 -0 0</pose>
+      </light>
+      <light name='user_point_light_1'>
+        <pose>2.62694 51.9599 1 0 -0 0</pose>
+      </light>
+      <light name='user_spot_light_0'>
+        <pose>2.124 51.2433 1 0 -0 0</pose>
+      </light>
+      <light name='user_spot_light_1'>
+        <pose>2.10222 66.3461 1 0 -0 0</pose>
+      </light>
+    </state>
+  </world>
+</sdf>

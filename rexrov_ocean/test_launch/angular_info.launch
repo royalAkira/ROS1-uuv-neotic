@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 启动姿态订阅节点 -->
+    <node pkg="rexrov_ocean" type="posture.py" name="rov_posture" output="screen">
+        <remap from="/rexrov/imu" to="/rexrov/imu"/>
+    </node>
+
+    <!-- 启动角速度订阅节点 -->
+    <node pkg="rexrov_ocean" type="angular_velocity.py" name="rov_angular_velocity" output="screen">
+        <remap from="/rexrov/imu" to="/rexrov/imu"/>
+    </node>
+</launch> 

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 启动位置订阅节点 -->
+    <node pkg="rexrov_ocean" type="position.py" name="rov_position" output="screen">
+        <remap from="/rexrov/gps" to="/rexrov/gps"/>
+    </node>
+
+    <!-- 启动加速度订阅节点 -->
+    <node pkg="rexrov_ocean" type="acceleration.py" name="rov_acceleration" output="screen">
+        <remap from="/rexrov/imu" to="/rexrov/imu"/>
+    </node>
+
+    <!-- 启动线速度计算节点 -->
+    <node pkg="rexrov_ocean" type="linear_velocity.py" name="rov_linear_velocity" output="screen">
+        <remap from="/rexrov/gps" to="/rexrov/gps"/>
+        <remap from="/rexrov/imu" to="/rexrov/imu"/>
+    </node>
+</launch>
+

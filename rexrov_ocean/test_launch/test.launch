@@ -1,0 +1,23 @@
+<launch>
+    <!--定义模型名称参数-->
+    <arg name="model_name" default="rexrov"/>
+
+    <!--加载ocean_waves -->
+    <include file="$(find uuv_gazebo_worlds)/launch/ocean_waves.launch"/>
+     
+    <!--加载机器人(带噪音)-->
+    <include file="$(find uuv_descriptions)/launch/upload_rexrov_default_noisy_pose.launch"/> 
+        <arg name="x" value="0"/>
+        <arg name="y" value="0"/>
+        <arg name="z" value="0"/>
+
+    <!--加载控制节点-->
+    <include file="$(find rexrov_ocean)/launch/control_system.launch">
+        <arg name="model_name" value="$(arg model_name)"/>
+    </include>
+
+    <!--设置相机视角-->
+    <node name="set_camera_pose" pkg="gazebo_ros" type="spawn_model" 
+          args="-gazebo -model camera_pose -file $(find uuv_gazebo_worlds)/models/camera_pose/model.sdf -sdf -x 0 -y -5 -z 2 -R 0.2 -P 0.0 -Y 0.0"/>
+
+</launch>
