@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!-- 
+    YOLO数字检测器启动文件
+    此文件用于启动数字检测节点并配置相关参数
+    使用方法：roslaunch yolo_digit_detector yolo_detector.launch
+-->
+<launch>
+    <!-- 设置参数 -->
+    <arg name="model_path" default="$(find yolo_digit_detector)/models/digit_detector.pt"/>
+    <arg name="conf_threshold" default="0.25"/>
+    <arg name="iou_threshold" default="0.45"/>
+    <arg name="image_width" default="640"/>
+    <arg name="image_height" default="640"/>
+    <arg name="camera_topic" default="/camera/image_raw"/>
+    <arg name="detection_topic" default="/digit_detection"/>
+    
+    <!-- 
+        加载配置文件
+        将yolo_config.yaml中的所有参数加载到ROS参数服务器
+        这些参数可以在节点中通过rospy.get_param()获取
+    -->
+    <rosparam command="load" file="$(find yolo_digit_detector)/config/yolo_config.yaml" />
+    
+    <!-- 
+        启动YOLO检测节点
+        pkg: 功能包名称
+        type: 要运行的Python脚本
+        name: 节点名称
+        output: 输出方式，screen表示输出到终端
+    -->
+    <node pkg="yolo_digit_detector" type="yolo_node.py" name="yolo_detector" output="screen">
+        <!-- 设置Python环境变量 -->
+        <env name="PYTHONPATH" value="$(env PYTHONPATH):$(find yolo_digit_detector)/src:$(find yolo_digit_detector)/scripts:/home/royal/catkin_ws/src/yolov5" />
+        <env name="PYTHONUNBUFFERED" value="1" />
+        
+        <!-- 设置CUDA环境变量（如果使用GPU） -->
+        <env name="CUDA_VISIBLE_DEVICES" value="0" />
+        
+        <!-- 
+            话题重映射
+            将节点内部使用的/camera/image_raw话题重映射到实际的相机话题
+            这里映射到RexROV水下机器人的相机话题
+        -->
+        <remap from="/camera/image_raw" to="/rexrov/rexrov/camera1/image_raw" />
+        
+        <!-- 
+            话题重映射
+            将节点内部使用的/detection_results话题重映射到实际使用的检测结果话题
+            这里映射到RexROV的数字检测结果话题
+        -->
+        <remap from="/detection_results" to="/rexrov/digit_detection" />
+        
+        <param name="model_path" value="$(arg model_path)"/>
+        <param name="conf_threshold" value="$(arg conf_threshold)"/>
+        <param name="iou_threshold" value="$(arg iou_threshold)"/>
+        <param name="image_width" value="$(arg image_width)"/>
+        <param name="image_height" value="$(arg image_height)"/>
+        <param name="camera_topic" value="$(arg camera_topic)"/>
+        <param name="detection_topic" value="$(arg detection_topic)"/>
+    </node>
+</launch> 
